@@ -1,0 +1,35 @@
+
+rem Following command is used to generate the response file
+rem IBMIM.exe -record D:\FileNet_Installable\WebSphere_ResponseFile\install_product.xml -skipInstall "C:\ProgramData\IBM\Installation Manager"
+
+rem The installable files are considered to be present @ D:\FileNet_Installable\agent.installer.win32.win32.x86_64_1.8.8000.20171130_1105
+D:
+
+cd D:\FileNet_Installable\agent.installer.win32.win32.x86_64_1.8.8000.20171130_1105
+
+installc.exe -log D:\FileNet_Installable\LogFiles\IM.Log -acceptLicense
+
+C:
+
+C:\Program Files\IBM\Installation Manager\eclipse\tools
+
+imcl.exe -acceptLicense input D:\FileNet_Installable\WebSphere_ResponseFile\install_product.xml -log D:\FileNet_Installable\LogFiles\WAS_install_log.xml
+
+D:
+
+D:\IBM\WebSphere\AppServer\bin\
+
+D:\IBM\WebSphere\AppServer\bin\manageprofiles.bat -create -profileName AppSrv01 -profilePath "D:\IBM\WebSphere\AppServer\profiles\AppSrv01" -templatePath "D:\IBM\WebSphere\AppServer\profileTemplates\default" -enableAdminSecurity false -winserviceAccountType localsystem -winserviceCheck true -winserviceStartupType automatic -omitAction samplesInstallAndConfig
+
+D:\IBM\WebSphere\AppServer\bin>stopServer.bat Server1
+
+D:\IBM\WebSphere\AppServer\bin>startServer.bat Server1
+
+D:\FileNet_Installable\FNCPE_5.5.2_WINDOWS_ML
+
+D:\FileNet_Installable\FNCPE_5.5.2_WINDOWS_ML\5.5.2.0-P8CPE-WIN.EXE -i silent -f D:\FileNet_Installable\LogFiles\cpit_silent_install.txt
+
+D:\Program Files\IBM\FileNet\ContentEngine\tools\configure
+
+configmgr_cl generateconfig -appserver WebSphere -license UVU -repositorytype standalone -db mssql -ldap activedirectory -bootstrap modify -deploy standard -profile FileNet_Profile
+
